@@ -21,30 +21,32 @@ private static Connection con;
 			System.out.println("connection established");
 			
 			con.setAutoCommit(false);
-			Statement stmt=con.createStatement();
+			
 			//passenger
-			String sql="INSERT into Passenger values(102,'Subhra',21,'BBSR','DEL')";
+			String sql="INSERT into Passenger values(103,'Subhra',21,'BBSR','DEL')";
+			Statement stmt=con.createStatement();
 			stmt.execute(sql);	
 			
 			//flight
 			String sql1="INSERT into flight values(5130,'AIR_INDIA','BBSR','DELHI','9:30AM_IST','11:30AM_IST')";
-			//stmt.execute(sql1);
+			stmt.execute(sql1);
 			//SAVEPOINT
 			Savepoint savepoint=con.setSavepoint();
 			
 			//payment
 			String sql2="INSERT into payment values(3421,'Subhra','4500')";
+			stmt.execute(sql2);
 			if(Payment.isSuccess()) {
-				stmt.execute(sql1);
-				stmt.execute(sql2);
+				//stmt.execute(sql1);
+				//stmt.execute(sql2);
 				con.commit();
 			}
 			else{//Connection is not closed
 				con.rollback(savepoint);
 				con.commit();
-				
+				System.out.println("Transaction failed");
 			}
-			System.out.println("Transaction failed");
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
